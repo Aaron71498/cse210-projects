@@ -12,6 +12,6 @@ class Program
 
         // returning the names acquired
         Console.WriteLine("");
-        Console.Write($"Your name is {last_name}, {first_name} {last_name}.");
+        Console.WriteLine($"Your name is {last_name}, {first_name} {last_name}.");
     }
 }
