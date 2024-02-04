@@ -15,7 +15,7 @@ public class PromptGenerator
             };
     
     // display randomly selected prompt
-    public string Display()
+    public string Random()
     {
         // get and display random prompt
         Random R = new Random();
