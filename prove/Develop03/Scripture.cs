@@ -18,4 +18,10 @@ class Scripture
     {
         return _scripture.Split(" ").ToList();
     }
+
+    // allow the reference to be displayed
+    public string Reference()
+    {
+        return _reference;
+    }
 }

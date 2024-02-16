@@ -19,8 +19,8 @@ class Word
         _isVisible = isvisible;
     }
 
-    // display the word
-    public string DisplayWord()
+    // return the word
+    public string ReturnWord()
     {
         if (_isVisible == false)
         {

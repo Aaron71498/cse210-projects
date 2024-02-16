@@ -9,20 +9,29 @@ class Reference
     private string _endVerse = "";
 
     // constructor for single-verse scripture
-    public Reference(string book, int chapter, int verse)
+    public Reference(string book, string chapter, string verse)
     {
         _book = book;
-        _chapter = chapter.ToString();
-        _startVerse = verse.ToString();
+        _chapter = chapter;
+        _startVerse = verse;
     }
 
     // constructor for multi-verse scripture
-    public Reference(string book, int chapter, int startVerse, int endVerse)
+    public Reference(string book, string chapter, string startVerse, string endVerse)
     {
         _book = book;
-        _chapter = chapter.ToString();
-        _startVerse = startVerse.ToString();
-        _endVerse = "-" + endVerse.ToString();
+        _chapter = chapter;
+        _startVerse = startVerse;
+        _endVerse = "-" + endVerse;
+    }
+
+    // methods for setting end verse
+    public void SetEndVerse(string endVerse)
+    {
+        if (endVerse != "")
+        {
+            _endVerse = "-" + endVerse;
+        }
     }
 
     // construct a complete reference
