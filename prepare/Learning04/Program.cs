@@ -1,9 +1,13 @@
 using System;
+using System.Diagnostics;
 
 class Program
 {
     static void Main(string[] args)
     {
-        Console.WriteLine("Hello Learning04 World!");
+        MathAssignment a = new MathAssignment("Roberto Rodriguez", "Fractions", "7.3", "8-19");
+
+        Console.WriteLine(a.GetSummary());
+        Console.WriteLine(a.GetHomeworkList());
     }
 }
