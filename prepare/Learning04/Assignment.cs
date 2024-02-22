@@ -3,7 +3,7 @@ using System;
 class Assignment
 {
     // attributes
-    private string _studentName;
+    protected string _studentName;
     private string _topic;
 
     // constructor
@@ -13,15 +13,9 @@ class Assignment
         _topic = topic;
     }
 
-    // getter for student name
-    public string GetStudentName()
-    {
-        return _studentName;
-    }
-
     // method to return name and topic
     public string GetSummary()
     {
-        return _studentName + " - " + _topic;
+        return $"{_studentName} - {_topic}";
     }
 }

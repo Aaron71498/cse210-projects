@@ -14,7 +14,6 @@ class WritingAssignment : Assignment
     // method to return writing assignment
     public string GetWritingInformation()
     {
-        string name = GetStudentName();
-        return _title + " by " name;
+        return $"{_title} by {_studentName}";
     }
 }
