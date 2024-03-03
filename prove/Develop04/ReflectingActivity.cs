@@ -4,8 +4,6 @@ using System.Runtime.CompilerServices;
 class ReflectingActivity : Activity
 {
     // attributes
-    private string _reflectingName = "Reflection Activity";
-    private string _reflectingDescription = "This activity will help you reflect on times in your life when you have shown strength and resilience. This will help you recognize the power you have and how you can use it in other aspects of your life.";
     private List<string> _reflectingPrompts = new List<string>
     {
         "Think of a time when you stood up for someone else.",
@@ -32,23 +30,12 @@ class ReflectingActivity : Activity
         
     }
 
-    // methods
-    public string GetReflectingName()
-    {
-        return _reflectingName;
-    }
-
-    public string GetReflectingDescription()
-    {
-        return _reflectingDescription;
-    }
-
     // display randomly selected prompt
     public void DisplayReflectingPrompt()
     {
         Random R = new Random();
         int number = R.Next(0, _reflectingPrompts.Count());
-        Console.WriteLine(_reflectingPrompts.ElementAt(number));
+        Console.WriteLine($"--- {_reflectingPrompts.ElementAt(number)} ---");
     }
 
     // display randomly selected question
@@ -56,6 +43,35 @@ class ReflectingActivity : Activity
     {
         Random R = new Random();
         int number = R.Next(0, _reflectingQuestions.Count());
-        Console.WriteLine(_reflectingQuestions.ElementAt(number));
+        Console.Write($"> {_reflectingQuestions.ElementAt(number)} ");
+    }
+
+    // run the reflecting activity
+    public void RunReflectingActivity()
+    {
+        // get duration
+        int duration = GetDuration();
+
+        // activity instructions
+        Console.WriteLine("Consider the following prompt:");
+        Console.WriteLine(); // blank line
+        DisplayReflectingPrompt();
+        Console.WriteLine(); // blank line
+        Console.WriteLine("When you have something in mind, press enter to continue.");
+        Console.ReadLine(); // wait for user to press enter
+        Console.WriteLine("Now ponder on each of the following questions as they relate to this experience.");
+
+        Console.Write("You may begin in: ");
+        CountdownPause(5);
+        Console.Clear(); // clear console
+
+        // run activity
+        while (duration > 0)
+        {
+            DisplayReflectingQuestion();
+            SpinnerPause(5);
+            Console.WriteLine(); // next line
+            duration -=- 10;
+        }
     }
 }

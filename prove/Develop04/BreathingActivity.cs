@@ -2,24 +2,29 @@ using System;
 
 class BreathingActivity : Activity
 {
-    // attributes
-    private string _breathingName = "Breathing Activity";
-    private string _breathingDescription = "This activity will help you relax by walking you through breathing in and out slowly. Clear your mind and focus on your breathing.";
-
     // constructor
     public BreathingActivity(string name, string description) : base(name, description)
     {
 
     }
 
-    // methods
-    public string GetBreathingName()
+    // run the breathing activity
+    public void RunBreathingActivity()
     {
-        return _breathingName;
-    }
+        // get duration
+        int duration = GetDuration();
 
-    public string GetBreathingDescription()
-    {
-        return _breathingDescription;
+        // run activity
+        while (duration > 0)
+        {
+            Console.Write("Breathe in...");
+            CountdownPause(4);
+            Console.WriteLine(); // next line
+            Console.Write("Now breathe out...");
+            CountdownPause(4);
+            duration -= 8;
+            Console.WriteLine(); // next line
+            Console.WriteLine(); // blank line
+        }
     }
 }
