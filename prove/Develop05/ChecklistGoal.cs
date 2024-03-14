@@ -14,6 +14,10 @@ public class ChecklistGoal : Goal
         _completionBonus = completionBonus;
     }
 
+    // ---------
+    // Behaviors
+    // ---------
+
     // add one instance to the count of times done, add points,
     // if goal is complete, mark as complete and add bonus points
     public override int RecordEvent()
@@ -32,17 +36,27 @@ public class ChecklistGoal : Goal
     }
 
     // convert data to save format for txt file
-    // save format - ChecklistGoal:name|description|points|completion bonus|number needed|number done|completion
-    public override string SaveFormat()
+    // save format - ChecklistGoal|name|description|points|completion bonus|number needed|number done|completion
+    public override string DataFormat()
     {
-        return $"ChecklistGoal:{GetName()}|{GetDescription()}|{GetPoints()}|{_completionBonus}|{_numberNeeded}|{_numberDone}";
+        return $"ChecklistGoal|{GetName()}|{GetDescription()}|{GetPoints()}|{_completionBonus}|{_numberNeeded}|{_numberDone}|{GetIsComplete()}";
     }
 
     // obtain required data from txt and convert front end data to reading format
     // reading format - [completion] name (description) -- Currently completed: number done/number needed
-    public override string LoadFormat()
+    public override string ReadFormat()
     {
-        // write code here ---------------------------
-        return;   
+        string completion;
+        
+        if (GetIsComplete() == true)
+        {
+            completion = "X";
+        }
+        else
+        {
+            completion = " ";
+        }
+
+        return $"[{completion}] {GetName()} ({GetDescription()}) -- Currently completed: {_numberDone}/{_numberNeeded}"; 
     }
 }

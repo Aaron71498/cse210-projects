@@ -6,6 +6,10 @@ public class EternalGoal : Goal
     public EternalGoal(string name, string description, int points) : base(name, description, points)
     {}
 
+    // ---------
+    // Behaviors
+    // ---------
+
     // add points to the total for completing an instance of the goal
     public override int RecordEvent()
     {
@@ -13,17 +17,9 @@ public class EternalGoal : Goal
     }
 
     // convert data to save format for txt file
-    // save format - EternalGoal:name|description|points
-    public override string SaveFormat()
+    // save format - EternalGoal|name|description|points
+    public override string DataFormat()
     {
-        return $"EternalGoal:{GetName()}|{GetDescription()}|{GetPoints()}";
-    }
-
-    // obtain required data from txt and convert front end data to reading format
-    // reading format - [completion] name (description)
-    public override string LoadFormat()
-    {
-        // write code here ---------------------------
-        return;   
+        return $"EternalGoal|{GetName()}|{GetDescription()}|{GetPoints()}";
     }
 }

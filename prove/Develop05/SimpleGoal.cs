@@ -6,6 +6,10 @@ public class SimpleGoal : Goal
     public SimpleGoal(string name, string description, int points) : base(name, description, points)
     {}
 
+    // ---------
+    // Behaviors
+    // ---------
+
     // mark the goal as complete, add points to the total
     public override int RecordEvent()
     {
@@ -14,17 +18,9 @@ public class SimpleGoal : Goal
     }
 
     // convert data to save format for txt file
-    // save format - SimpleGoal:name|description|points|completion
-    public override string SaveFormat()
+    // save format - SimpleGoal|name|description|points|completion
+    public override string DataFormat()
     {
-        return $"SimpleGoal:{GetName()}|{GetDescription()}|{GetPoints()}|{GetIsComplete()}";
-    }
-
-    // obtain required data from txt and convert front end data to reading format
-    // reading format - [completion] name (description)
-    public override string LoadFormat()
-    {
-        // write code here ---------------------------
-        return;   
+        return $"SimpleGoal|{GetName()}|{GetDescription()}|{GetPoints()}|{GetIsComplete()}";
     }
 }

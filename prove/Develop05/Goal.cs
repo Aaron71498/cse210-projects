@@ -16,6 +16,10 @@ public abstract class Goal
         _points = points;
     }
 
+    // ---------
+    // Behaviors
+    // ---------
+
     // getters
     public string GetName()
     {
@@ -50,8 +54,23 @@ public abstract class Goal
     public abstract int RecordEvent();
 
     // convert data into save format for txt file
-    public abstract string SaveFormat();
+    public abstract string DataFormat();
 
     // obtain required data from txt and convert front end data to reading format
-    public abstract string LoadFormat();
+    // reading format - [completion] name (description)
+    public virtual string ReadFormat()
+    {
+        string completion;
+
+        if (_isComplete == true)
+        {
+            completion = "X";
+        }
+        else
+        {
+            completion = " ";
+        }
+
+        return $"[{completion}] {_name} ({_description})";
+    }
 }
