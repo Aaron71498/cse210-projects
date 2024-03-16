@@ -33,7 +33,9 @@ class Program
 
             switch (menuChoice)
             {
+                // ------------------
                 // 1. create new goal
+                // ------------------
                 case "1":
 
                     string goalChoice = "0";
@@ -106,7 +108,7 @@ class Program
                             int completionBonus = int.Parse(Console.ReadLine());
 
                             // make data and read formats of goal, add to lists
-                            ChecklistGoal checklistGoal = new ChecklistGoal(name, description, points, numberNeeded, completionBonus);
+                            ChecklistGoal checklistGoal = new ChecklistGoal(name, description, points, completionBonus, numberNeeded);
                             dataList.Add(checklistGoal.DataFormat());
                             readList.Add(checklistGoal.ReadFormat());
                             names.Add(name);
@@ -116,7 +118,9 @@ class Program
                     
                     break;
 
+                // -------------
                 // 2. list goals
+                // -------------
                 case "2":
                     
                     int goalPosition = 0;
@@ -128,17 +132,23 @@ class Program
 
                     break;
 
+                // -------------
                 // 3. save goals
+                // -------------
                 case "3":
-                    // write code -----------------
+                    // write code -----------------------------------------------------------------------------------------
                     break;
 
+                // -------------
                 // 4. load goals
+                // -------------
                 case "4":
-                    // write code -----------------
+                    // write code -----------------------------------------------------------------------------------------
                     break;
 
+                // ---------------
                 // 5. record event
+                // ---------------
                 case "5":
                     
                     // list the goals
@@ -154,25 +164,49 @@ class Program
                     Console.Write("Which goal did you accomplish? ");
                     int goalDone = int.Parse(Console.ReadLine());
 
-                    // format data of goal done
-                    string chosenGoal = dataList.ElementAt(goalDone - 1);
-                    string[] data = chosenGoal.Split("|");
-
-                    // goal is a simple goal
-                    if (data[0] == "SimpleGoal")
+                    // make sure the input number is within the range of the list of goals
+                    if (goalDone >= 1 && goalDone <= names.Count)
                     {
-                        // reconstruct class, mark as complete, replace in the data and read lists
-                        SimpleGoal simpleGoal = new SimpleGoal(data[1], data[2], int.Parse(data[3]));
-                        int addPoints = simpleGoal.RecordEvent();
-                        dataList[goalDone - 1] = simpleGoal.DataFormat();
-                        readList[goalDone - 1] = simpleGoal.ReadFormat();
+                        // split data of goal done into individual strings
+                        string chosenGoal = dataList.ElementAt(goalDone - 1);
+                        string[] data = chosenGoal.Split("|");
 
-                        Console.WriteLine($"Congratulations! You have earned {addPoints} points!");
-                        pointsTotal += addPoints;
+                        // now work with the goals depending on what they are
+                        int addPoints = 0;
+                        // goal is a simple goal
+                        if (data[0] == "SimpleGoal")
+                        {
+                            // reconstruct class, get points and mark as complete, replace in the data and read lists
+                            SimpleGoal simpleGoal = new SimpleGoal(data[1], data[2], int.Parse(data[3]));
+                            addPoints = simpleGoal.RecordEvent();
+                            dataList[goalDone - 1] = simpleGoal.DataFormat();
+                            readList[goalDone - 1] = simpleGoal.ReadFormat();
+                        }
+
+                        // goal is an eternal goal
+                        else if (data[0] == "EternalGoal")
+                        {
+                            // reconstruct class, get points, replace in the data and read lists
+                            EternalGoal eternalGoal = new EternalGoal(data[1], data[2], int.Parse(data[3]));
+                            addPoints  = eternalGoal.RecordEvent();
+                            dataList[goalDone - 1] = eternalGoal.DataFormat();
+                            readList[goalDone - 1] = eternalGoal.ReadFormat();
+                        }
+
+                        // goal is a checklist goal
+                        else if (data[0] == "ChecklistGoal")
+                        {
+                            // reconstruct class, get points, replace in the data and read lists
+                            ChecklistGoal checklistGoal = new ChecklistGoal(data[1], data[2], int.Parse(data[3]), int.Parse(data[4]), int.Parse(data[5]), int.Parse(data[6]));
+                            addPoints = checklistGoal.RecordEvent();
+                            dataList[goalDone - 1] = checklistGoal.DataFormat();
+                            readList[goalDone - 1] = checklistGoal.ReadFormat();
+                        }
+
+                        // tell the user how many points they earned, add those points to the total
+                            Console.WriteLine($"Congratulations! You have earned {addPoints} points!");
+                            pointsTotal += addPoints;
                     }
-
-                    // write code for eternal goal and checklist goal
-                    // ----------------------------------------------------------------------------------------------------
 
                     break;
 

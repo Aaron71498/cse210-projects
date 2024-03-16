@@ -8,10 +8,11 @@ public class ChecklistGoal : Goal
     private int _completionBonus;
 
     // constructor
-    public ChecklistGoal(string name, string description, int points, int numberNeeded, int completionBonus) : base(name, description, points)
+    public ChecklistGoal(string name, string description, int points, int completionBonus, int numberNeeded, int numberDone = 0) : base(name, description, points)
     {
         _numberNeeded = numberNeeded;
         _completionBonus = completionBonus;
+        _numberDone = numberDone;
     }
 
     // ---------
@@ -36,7 +37,7 @@ public class ChecklistGoal : Goal
     }
 
     // convert data to save format for txt file
-    // save format - ChecklistGoal|name|description|points|completion bonus|number needed|number done|completion
+    // save format - ChecklistGoal|name|description|points|number needed|number done|completion bonus|completion
     public override string DataFormat()
     {
         return $"ChecklistGoal|{GetName()}|{GetDescription()}|{GetPoints()}|{_completionBonus}|{_numberNeeded}|{_numberDone}|{GetIsComplete()}";
