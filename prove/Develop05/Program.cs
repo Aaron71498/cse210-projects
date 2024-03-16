@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 
 class Program
 {
@@ -10,7 +11,7 @@ class Program
         List<string> names = new List<string>(); // list for names of the goals
 
         string menuChoice = "0";
-        while (menuChoice != "6")
+        while (menuChoice != "7")
         {
             // main menu
             Console.WriteLine(); // blank space
@@ -22,9 +23,11 @@ class Program
             Console.WriteLine("  3. Save Goals");
             Console.WriteLine("  4. Load Goals");
             Console.WriteLine("  5. Record Event");
-            Console.WriteLine("  6. Quit");
+            Console.WriteLine("  6. Erase Goal");
+            Console.WriteLine("  7. Quit");
             Console.Write("Select a choice from the menu: ");
             menuChoice = Console.ReadLine();
+            Console.WriteLine(); // blank line
 
             // variables for class creation
             string name;
@@ -49,6 +52,7 @@ class Program
                         Console.WriteLine("  3. Checklist Goal");
                         Console.Write("Which type of goal would you like to create? ");
                         goalChoice = Console.ReadLine();
+                        Console.WriteLine(); // blank line
                     }
 
                     switch (goalChoice)
@@ -136,14 +140,88 @@ class Program
                 // 3. save goals
                 // -------------
                 case "3":
-                    // write code -----------------------------------------------------------------------------------------
+                    
+                    // open the text file to write to it
+                    using (StreamWriter outputFile = new StreamWriter("goals.txt"))
+                    {
+                        // add the total points to the text file
+                        outputFile.WriteLine(pointsTotal);
+
+                        // add the data format of each goal to the text file
+                        foreach (string goalData in dataList)
+                        {
+                            outputFile.WriteLine(goalData);
+                        }
+                    }
+
                     break;
 
                 // -------------
                 // 4. load goals
                 // -------------
                 case "4":
-                    // write code -----------------------------------------------------------------------------------------
+                    
+                    // read only the first line from text file to get points
+                    pointsTotal = int.Parse(File.ReadLines("goals.txt").First());
+                    
+                    // read each line from text file
+                    string[] lines = System.IO.File.ReadAllLines("goals.txt");
+                    foreach (string line in lines)
+                    {
+                        // split each line into their individual parts
+                        string[] parts = line.Split("|");
+                        
+                        // use classes to add each line to the data, read, and names lists
+                        
+                        // simple goals
+                        if (parts[0] == "SimpleGoal")
+                        {
+                            // construct class
+                            SimpleGoal simpleGoal = new SimpleGoal(parts[1], parts[2], int.Parse(parts[3]));
+
+                            // check completion
+                            if (parts[4] == "True")
+                            {
+                                simpleGoal.IsComplete();
+                            }
+
+                            // add data to lists
+                            dataList.Add(simpleGoal.DataFormat());
+                            readList.Add(simpleGoal.ReadFormat());
+                            names.Add(parts[1]);
+                        }
+
+                        // eternal goals
+                        else if (parts [0] == "EternalGoal")
+                        {
+                            // construct class
+                            EternalGoal eternalGoal = new EternalGoal(parts[1], parts[2], int.Parse(parts[3]));
+
+                            // add data to lists
+                            dataList.Add(eternalGoal.DataFormat());
+                            readList.Add(eternalGoal.ReadFormat());
+                            names.Add(parts[1]);
+                        }
+
+                        // checklist goals
+                        else if (parts[0] == "ChecklistGoal")
+                        {
+                            // construct class
+                            ChecklistGoal checklistGoal = new ChecklistGoal(parts[1], parts[2], int.Parse(parts[3]), int.Parse(parts[4]), int.Parse(parts[5]), int.Parse(parts[6]));
+
+                            // check completion
+                            if (parts[7] == "True")
+                            {
+                                checklistGoal.IsComplete();
+                            }
+
+                            // add data to lists
+                            dataList.Add(checklistGoal.DataFormat());
+                            readList.Add(checklistGoal.ReadFormat());
+                            names.Add(parts[1]);
+                        }
+                    }
+
                     break;
 
                 // ---------------
@@ -176,7 +254,7 @@ class Program
                         // goal is a simple goal
                         if (data[0] == "SimpleGoal")
                         {
-                            // reconstruct class, get points and mark as complete, replace in the data and read lists
+                            // construct class, get points and mark as complete, replace in the data and read lists
                             SimpleGoal simpleGoal = new SimpleGoal(data[1], data[2], int.Parse(data[3]));
                             addPoints = simpleGoal.RecordEvent();
                             dataList[goalDone - 1] = simpleGoal.DataFormat();
@@ -186,7 +264,7 @@ class Program
                         // goal is an eternal goal
                         else if (data[0] == "EternalGoal")
                         {
-                            // reconstruct class, get points, replace in the data and read lists
+                            // construct class, get points, replace in the data and read lists
                             EternalGoal eternalGoal = new EternalGoal(data[1], data[2], int.Parse(data[3]));
                             addPoints  = eternalGoal.RecordEvent();
                             dataList[goalDone - 1] = eternalGoal.DataFormat();
@@ -196,7 +274,7 @@ class Program
                         // goal is a checklist goal
                         else if (data[0] == "ChecklistGoal")
                         {
-                            // reconstruct class, get points, replace in the data and read lists
+                            // construct class, get points, replace in the data and read lists
                             ChecklistGoal checklistGoal = new ChecklistGoal(data[1], data[2], int.Parse(data[3]), int.Parse(data[4]), int.Parse(data[5]), int.Parse(data[6]));
                             addPoints = checklistGoal.RecordEvent();
                             dataList[goalDone - 1] = checklistGoal.DataFormat();
@@ -204,13 +282,42 @@ class Program
                         }
 
                         // tell the user how many points they earned, add those points to the total
+                            Console.WriteLine(); // blank line
                             Console.WriteLine($"Congratulations! You have earned {addPoints} points!");
                             pointsTotal += addPoints;
                     }
 
                     break;
 
-                // 6. quit
+                // -------------
+                // 6. erase goal
+                // -------------
+                case "6":
+
+                    // list the goals
+                    int erasePosition = 0;
+                    Console.WriteLine("The goals are:");
+                    foreach(string eraseName in names)
+                    {
+                        erasePosition += 1;
+                        Console.WriteLine($"{erasePosition}. {eraseName}");
+                    }
+
+                    // ask which goal to erase
+                    Console.Write("Which goal would you like to erase? ");
+                    int goalErase = int.Parse(Console.ReadLine());
+
+                    // erase the goal if it's within range, otherwise ignore
+                    if (goalErase >= 1 && goalErase <= names.Count)
+                    {
+                        dataList.RemoveAt(goalErase - 1);
+                        readList.RemoveAt(goalErase - 1);
+                        names.RemoveAt(goalErase - 1);
+                    }
+
+                    break;
+                
+                // 7. quit
                 default:
                     break;
             }
