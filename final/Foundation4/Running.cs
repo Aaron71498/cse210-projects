@@ -10,4 +10,19 @@ class Running : Activity
     {
         _distance = distance;
     }
+
+    // override calculation methods
+    public override float Distance()
+    {
+        return _distance;
+    }
+    public override float Speed()
+    {
+        return _distance / Minutes() * 60;
+    }
+
+    public override string Type()
+    {
+        return "Running";
+    }
 }
